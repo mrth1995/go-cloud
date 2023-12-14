@@ -1202,6 +1202,9 @@ func (b *bucket) SignedURL(ctx context.Context, key string, opts *driver.SignedU
 				// https://github.com/aws/aws-sdk-go-v2/issues/1475
 				return "", gcerr.New(gcerr.Unimplemented, nil, 1, "s3blob: AWS SDK v2 does not supported enforcing ContentType in SignedURLs for PUT")
 			}
+			if opts.ContentLength != nil {
+				in.ContentLength = opts.ContentLength
+			}
 			if opts.BeforeSign != nil {
 				asFunc := func(i interface{}) bool {
 					v, ok := i.(**s3v2.PutObjectInput)
@@ -1226,6 +1229,9 @@ func (b *bucket) SignedURL(ctx context.Context, key string, opts *driver.SignedU
 			}
 			if opts.EnforceAbsentContentType || opts.ContentType != "" {
 				in.ContentType = aws.String(opts.ContentType)
+			}
+			if opts.ContentLength != nil {
+				in.ContentLength = opts.ContentLength
 			}
 			if opts.BeforeSign != nil {
 				asFunc := func(i interface{}) bool {

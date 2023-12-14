@@ -972,6 +972,9 @@ func (h *URLSignerHMAC) URLFromKey(ctx context.Context, key string, opts *driver
 	if opts.ContentType != "" {
 		q.Set("contentType", opts.ContentType)
 	}
+	if opts.ContentLength != nil {
+		q.Set("contentLength", strconv.Itoa(int(*opts.ContentLength)))
+	}
 	q.Set("signature", h.getMAC(q))
 	sURL.RawQuery = q.Encode()
 

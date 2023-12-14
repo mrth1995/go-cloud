@@ -365,6 +365,14 @@ type SignedURLOptions struct {
 	// asFunc converts its argument to driver-specific types.
 	// See https://gocloud.dev/concepts/as/ for background information.
 	BeforeSign func(asFunc func(interface{}) bool) error
+
+	// ContentLength specifies the Content-Length HTTP header to use in the PUT request.
+	// It should match exactly with the content length in request body.
+	// This field is optional, by default content length automatically specifies.
+	// But if this set, the content length will included in singing url process.
+	//
+	// This field will not be set for any non-PUT requests.
+	ContentLength *int64
 }
 
 // prefixedBucket implements Bucket by prepending prefix to all keys.
